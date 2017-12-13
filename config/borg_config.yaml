@@ -32,6 +32,6 @@ features:
   - name: django
     test_port: '8000'
   - name: mariadb
-    databases: empire testempire
+    databases: anemoment anemomenttest
     sql_user: vagrant
     password_location: /share/.mysql_user_pass
