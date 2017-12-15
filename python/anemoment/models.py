@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class WindDataPoint(models.Model):
+class WindData(models.Model):
     X_AXIS = "X"
     Y_AXIS = "Y"
     Z_AXIS = "Z"
@@ -11,3 +11,5 @@ class WindDataPoint(models.Model):
         (Z_AXIS, "Z-Axis"),
     )
     axis = models.CharField(max_length=2, choices=AXIS_CHOICES)
+    speed = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
