@@ -1,0 +1,3 @@
+[submodule "python/static/c3"]
+	path = python/static/c3
+	url = https://github.com/c3js/c3.git
