@@ -1,47 +1,44 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<!-- TODO: Create a stylesheet -->
-<style>
-
-body {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
-}
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-</style>
-<body>
-<script src="http://d3js.org/d3.v4.js"></script>
 {% load static %}
-<script src="{% static "c3/c3.min.js" %}"></script>
+<link href="{% static "c3/c3.css" %}" rel="stylesheet">
+<body>
+<div id="chart"></div>
+<script src="http://d3js.org/d3.v3.js"></script>
+
+<script src="{% static "c3/c3.js" %}"></script>
 <script>
 
-    var parseTime = d3.utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
+    var parseTime = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
 
     var url = "{% url "wind_data" %}";
 
     d3.json(url, function (error, data) {
         if (error) throw error;
         data.forEach(function(d) {
-            d.timestamp = parseTime(d.timestamp);
+            d.timestamp = parseTime.parse(d.timestamp);
             console.log(d.timestamp);
         });
         console.log(data);
+
+        var chart = c3.generate({
+            bindto: '#chart',
+            data: {
+                json: data,
+                keys: {
+                    x: 'timestamp',
+                    value: ['x_speed', 'y_speed', 'z_speed'],
+                }
+            },
+            axis: {
+            x: {
+                type: 'timeseries',
+                tick: {
+                    format: '%H:%M:%S'
+                }
+            }
+        }
+        })
     });
 
 </script>
