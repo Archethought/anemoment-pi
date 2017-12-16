@@ -27,6 +27,8 @@ body {
 </style>
 <body>
 <script src="http://d3js.org/d3.v4.js"></script>
+{% load static %}
+<script src="{% static "c3/c3.min.js" %}"></script>
 <script>
 
     var parseTime = d3.utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
