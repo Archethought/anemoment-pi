@@ -13,6 +13,8 @@
 
     var url = "{% url "wind_data" %}";
 
+    var chart = null;
+
     d3.json(url, function (error, data) {
         if (error) throw error;
         data.forEach(function(d) {
@@ -21,7 +23,7 @@
         });
         console.log(data);
 
-        var chart = c3.generate({
+        chart = c3.generate({
             bindto: '#chart',
             data: {
                 json: data,
@@ -31,15 +33,38 @@
                 }
             },
             axis: {
-            x: {
-                type: 'timeseries',
-                tick: {
-                    format: '%H:%M:%S'
+                x: {
+                    type: 'timeseries',
+                    tick: {
+                        format: '%H:%M:%S'
+                    }
                 }
             }
-        }
         })
     });
+
+    function updateData() {
+        d3.json(url, function (error, data) {
+            if (error) throw error;
+            data.forEach(function(d) {
+                d.timestamp = parseTime.parse(d.timestamp);
+                console.log(d.timestamp);
+            });
+            console.log(data);
+
+            chart.load({
+                json: data,
+                keys: {
+                    x: 'timestamp',
+                    value: ['x_speed', 'y_speed', 'z_speed'],
+                }
+            });
+        });
+    }
+
+    updateData();
+
+    setInterval(updateData, 500);
 
 </script>
 </body>
