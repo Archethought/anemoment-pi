@@ -41,7 +41,9 @@
                 x: {
                     type: 'timeseries',
                     tick: {
-                        format: '%H:%M:%S'
+                        format: '%M:%S',
+                        max: 2,
+                        count: 20,
                     }
                 }
             }
@@ -75,7 +77,7 @@
 
     updateData();
 
-    setInterval(updateData, 100);
+    setInterval(updateData, 500);
 
 </script>
 </body>

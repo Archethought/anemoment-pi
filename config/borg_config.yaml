@@ -1,6 +1,6 @@
 guest_info:
   # This is the name that the VirtualBox instance will use
-  name: "Empire Development Instance"
+  name: "Anemoment Development Instance"
   # System memory allocated to this instance
   memory: 2048
   # CPU threads available to this instance
