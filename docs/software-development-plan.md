@@ -14,16 +14,25 @@ The software will be written mostly in Python, with limited HTML and Javascript 
 ## Required COTS
 
 ### UART Driver
+
 The UART drivers are already built in to the Raspberry Pi.  No additional work is needed to retrieve raw data from the Anemoment Trisonica.
 
+*Estimated Time to Implement: 0 Hours*
+
 ### MySQL
-Borg already includes support for MySQL via [MariaDB](https://mariadb.org).  The setup scripts will port to the Raspberry Pi and accept Anemoment Trisonica data without issue.
+Borg already includes support for MySQL via [MariaDB](https://mariadb.org).  The setup scripts will port to the Raspberry Pi without issue.
+
+*Estimated Time to Implement: 0 Hours*
 
 ### Django
-[Django](https://www.djangoproject.com) is a
+[Django](https://www.djangoproject.com) is a web development framework built in Python.  While borg already includes support for Django, additional configuration is needed for deploying to a production web server.
+
+*Estimated Time to Implement: 2 Hours*
 
 ### Javascript
-C3 and JSON
+JSON data will be delivered to a [C3](http://c3js.org)-based graph and rendered on a web browser.  Since modern web browsers support Javascript, no additional work is needed to bring up Javascript.
+
+*Estimated Time to Implement: 0 Hours*
 
 ### Apache Webserver With mod_wsgi
 
@@ -38,3 +47,5 @@ C3 and JSON
 ### Wind Data View
 
 ### Graph Webpage
+
+## System Integration and Deployment
