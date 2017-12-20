@@ -27,8 +27,9 @@ The Anemoment TriSonica Data Logging and Web GUI is architected using well suppo
 
 ## Software Architecture
 <p align=center>
-![](software-architecture/Software Architecture.png)
+<img src="software-architecture/Software Architecture.png" align="center")
 </p>
+
 The software architecture is built around open-source database and web frameworks.  Data retrieved from the Anemoment TriSonica tool will be loaded into a database.  The web framework will read data from that database, then serve web pages that generate interactive graphs from the data.  This results in a highly portable and maintainable software project that can easily add new features in future versions.
 
 ## Development Environment
