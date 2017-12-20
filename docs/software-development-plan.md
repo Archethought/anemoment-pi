@@ -1,7 +1,14 @@
+
+<img src="images/anemoment-logo.png" alt="Anemoment Logo" align="left">
+<img src="images/Pseudo_Design_Icon.png" alt="Pseudo Design Logo" align="right">
+
+<br>
+<br>
+
 # Anemoment TriSonica Data Logging and Web GUI
 
 ## Executive Summary
-The Anemoment TriSonica Data Logging and Web GUI is architected using well supported open-source software tools for the Raspberry Pi.  By utilizing these tools the software will be portable, upgradable, and reliable.  To meet the current End-User requirements, Pseudo Design estimates to expend 22 to 24 hours on development for the final product.
+The Anemoment TriSonica Data Logging and Web GUI is architected using well supported open-source software tools for the Raspberry Pi.  By utilizing these tools the software will be portable, upgradable, and reliable.  To meet the current End-User requirements, Pseudo Design estimates to expend 24 to 26 hours on development for the final product.
 
 ## End-User Requirements
 #### Raspberry Pi boots to a web browser pointing to the Anemoment logging graph
@@ -98,5 +105,10 @@ Create database models for the required data parameters along with a timestamp. 
 ## System Integration and Deployment
 * Borg-side scripts for provisioning Raspberry Pi image
 * Raspberry Pi-side script for configuring system
+
+*Estimated Time to Implement: 2 Hours*
+
+## Final Documentation
+Update this document to include high-level design decisions (password locations, install instructions)
 
 *Estimated Time to Implement: 2 Hours*
