@@ -4,10 +4,12 @@
 <p align=center>
 ![](software-architecture/Software Architecture.png)
 </p>
-The software architecture is built around open-source database and web frameworks.  Data retreived from the Anemoment Trisonica tool will be loaded into a database.  The web framework will read data from that database, then serve web pages that generate interactive graphs from that data.  This results in a highly portable and maintainable software project that can easily add new features in future versions.
+The software architecture is built around open-source database and web frameworks.  Data retreived from the Anemoment Trisonica tool will be loaded into a database.  The web framework will read data from that database, then serve web pages that generate interactive graphs from the data.  This results in a highly portable and maintainable software project that can easily add new features in future versions.
 
 ## Development Environment
-Borg
+The software will be developed using the [borg](https://github.com/Syncroness-Inc/borg) project.  Borg is a set of libraries that allow provisioning of virtual machines via simple YAML-formatted configuration files.  This results in a development environment that is agnostic to the host OS, and the ability to deploy an RPi system image that is similarly provisioned from the configuration file.
+
+The software will be written mostly in Python, with limited HTML and Javascript being required to generate web pages. Although the software project doesn't require a specific IDE for development, [PyCharm](https://www.jetbrains.com/pycharm/) is highly recommended.
 
 ## Required COTS
 
