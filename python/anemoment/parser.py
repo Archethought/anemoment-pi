@@ -8,7 +8,9 @@ class Parser:
         :param serial: The open serial connection to parse
         :type serial: serial.Serial
         """
-        pass
+        self.__serial = serial
+        if not self.__serial.is_open:
+            self.__serial.open()
 
 
 
