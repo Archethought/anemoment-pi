@@ -28,7 +28,7 @@
                 json: data,
                 keys: {
                     x: 'timestamp',
-                    value: ['x_speed', 'y_speed', 'z_speed'],
+                    value: ['speed', 'direction', 'temperature'],
                 }
             },
             transition: {
@@ -67,7 +67,7 @@
                 json: data,
                 keys: {
                     x: 'timestamp',
-                    value: ['x_speed', 'y_speed', 'z_speed'],
+                    value: ['speed', 'direction', 'temperature'],
                 }
             });
             chart.axis.min({x: start_time});
