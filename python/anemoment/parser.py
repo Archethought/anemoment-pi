@@ -30,13 +30,19 @@ class Parser:
         elif data_len == 5:
             new_value["temperature"] = 0
         else:
-            new_value["temperature"] = float(data[5])
-        new_value["speed"] = float(data[0])
-        new_value["direction"] = float(data[1])
-        new_value["north_south"] = float(data[2])
-        new_value["west_east"] = float(data[3])
-        new_value["up_down"] = float(data[4])
-        WindData.objects.create(**new_value)
+            new_value["temperature"] = data[5]
+        try:
+            new_value["temperature"] = float(new_value["temperature"])
+            new_value["speed"] = float(data[0])
+            new_value["direction"] = float(data[1])
+            new_value["north_south"] = float(data[2])
+            new_value["west_east"] = float(data[3])
+            new_value["up_down"] = float(data[4])
+            WindData.objects.create(**new_value)
+        except ValueError:
+            RawInputError.objects.create(type=RawInputError.E_INVALID, raw_input=input_data)
+
+
 
 
 
