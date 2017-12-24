@@ -1,7 +1,21 @@
 from django.test import TestCase
 from unittest.mock import Mock, patch
+from datetime import datetime, timedelta
 
 from .parser import Parser
+from .models import WindData
+
+
+class TestModels(TestCase):
+    def test_wind_data_timestamp_is_within_time(self):
+        w = WindData()
+        start_time = datetime.now() - timedelta(minutes=5)
+        self.assertTrue(w.is_published_within(start_time))
+
+
+class TestViews(TestCase):
+    pass
+
 
 class TestParser(TestCase):
     GOOD_ANEMOMENT_DATA = [
