@@ -3,7 +3,6 @@ from unittest.mock import Mock, patch
 
 from .parser import Parser
 
-
 class TestParser(TestCase):
     GOOD_ANEMOMENT_DATA = [
         {
@@ -41,19 +40,19 @@ class TestParser(TestCase):
 
     @patch("anemoment.parser.RawInputError")
     @patch("anemoment.parser.WindData")
-    def test_parse_incomplete_anemoment_data(self, error, data_model):
+    def test_parse_incomplete_anemoment_data(self, data_model, error_model):
         test_string = "52 41 -3"
         p = Parser()
         p.parse_string(test_string)
-        error.objects.create.assert_called_with(type=error.E_INCOMPLETE, raw_input=test_string)
+        error_model.objects.create.assert_called_with(type=error_model.E_INCOMPLETE, raw_input=test_string)
         data_model.objects.create.assert_not_called()
 
     @patch("anemoment.parser.RawInputError")
     @patch("anemoment.parser.WindData")
-    def test_parse_invalid_anemoment_data(self, error, data_model):
+    def test_parse_invalid_anemoment_data(self, data_model, error_model):
         test_string = "34 -1 3 beef 2"
         p = Parser()
         p.parse_string(test_string)
-        error.objects.create.assert_called_with(type=error.E_INVALID, raw_input=test_string)
+        error_model.objects.create.assert_called_with(type=error_model.E_INVALID, raw_input=test_string)
         data_model.objects.create.assert_not_called()
 

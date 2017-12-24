@@ -1,4 +1,4 @@
-from .models import WindData
+from .models import WindData, RawInputError
 
 
 class Parser:
@@ -15,17 +15,17 @@ class Parser:
         if self.__serial is not None and not self.__serial.is_open:
             self.__serial.open()
 
-    def parse_string(self, data):
+    def parse_string(self, input_data):
         """
         Assumes unit is configured to *NOT* show headers.
-        :param data: A line of Anemoment TriSonica formatted data
-        :type data: string
+        :param input_data: A line of Anemoment TriSonica formatted data
+        :type input_data: string
         """
-        data = data.split(" ")
+        data = input_data.split(" ")
         data_len = len(data)
         new_value = {}
         if data_len != 5 and data_len != 6:
-            # Throw/log an error here?
+            RawInputError.objects.create(type=RawInputError.E_INCOMPLETE, raw_input=input_data)
             return
         elif data_len == 5:
             new_value["temperature"] = 0
