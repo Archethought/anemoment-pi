@@ -39,7 +39,7 @@ class TestParser(TestCase):
             p.parse_string(e["raw_input"])
             model.objects.create.assert_called_with(**e["parsed_data"])
 
-    @patch("anemoment.parser.ErrorLog")
+    @patch("anemoment.parser.RawInputError")
     @patch("anemoment.parser.WindData")
     def test_parse_incomplete_anemoment_data(self, error, data_model):
         test_string = "52 41 -3"
@@ -48,7 +48,7 @@ class TestParser(TestCase):
         error.objects.create.assert_called_with(type=error.E_INCOMPLETE, raw_input=test_string)
         data_model.objects.create.assert_not_called()
 
-    @patch("anemoment.parser.ErrorLog")
+    @patch("anemoment.parser.RawInputError")
     @patch("anemoment.parser.WindData")
     def test_parse_invalid_anemoment_data(self, error, data_model):
         test_string = "34 -1 3 beef 2"
@@ -57,4 +57,3 @@ class TestParser(TestCase):
         error.objects.create.assert_called_with(type=error.E_INVALID, raw_input=test_string)
         data_model.objects.create.assert_not_called()
 
-        
