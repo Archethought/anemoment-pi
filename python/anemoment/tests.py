@@ -8,9 +8,22 @@ from .models import WindData
 
 class TestModels(TestCase):
     def test_wind_data_timestamp_is_within_time(self):
-        w = WindData()
+        create_time = datetime.now() - timedelta(minutes=2)
+        w = WindData(timestamp=create_time)
         start_time = datetime.now() - timedelta(minutes=5)
         self.assertTrue(w.is_published_within(start_time))
+
+    def test_wind_data_timestamp_is_not_within_time(self):
+        create_time = datetime.now() - timedelta(minutes=5)
+        w = WindData(timestamp=create_time)
+        start_time = datetime.now() - timedelta(minutes=2)
+        self.assertFalse(w.is_published_within(start_time))
+
+        create_time = datetime.now() - timedelta(minutes=5)
+        w = WindData(timestamp=create_time)
+        start_time = datetime.now() - timedelta(minutes=15)
+        end_time = datetime.now() - timedelta(minutes=10)
+        self.assertFalse(w.is_published_within(start_time, end_time))
 
 
 class TestViews(TestCase):
