@@ -7,7 +7,7 @@ from .parser import Parser
 class TestParser(TestCase):
     GOOD_ANEMOMENT_DATA = [
         {
-            "raw_input": "S 05.2 D 112 U -01.9 V 04.7 W 01.1 T 22.6",
+            "raw_input": "05.2 112 -01.9 04.7 01.1 22.6",
             "parsed_data": {
                 "speed": 5.2,
                 "direction": 112,
