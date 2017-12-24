@@ -6,9 +6,11 @@ from datetime import timedelta
 
 from .models import WindData
 
+
 # Create your views here.
 def graph(request):
     return render(request, 'anemoment/graph.html')
+
 
 def wind_data(request):
     threshold = timezone.now() - timedelta(minutes=1)
