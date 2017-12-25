@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from unittest.mock import Mock, patch
-from datetime import datetime, timedelta
-import json
+from datetime import timedelta
+from django.utils import timezone
 
 from .parser import Parser
 from .models import WindData
@@ -24,27 +24,27 @@ def create_wind_data(
         'up_down': up_down,
         'temperature': temperature,
     }
-    timestamp = datetime.now() + timedelta(minutes=minutes)
+    timestamp = timezone.now() + timedelta(minutes=minutes)
     return WindData.objects.create(timestamp=timestamp, **kwargs)
 
 
 class TestModels(TestCase):
     def test_wind_data_timestamp_is_within_time(self):
-        create_time = datetime.now() - timedelta(minutes=2)
+        create_time = timezone.now() - timedelta(minutes=2)
         w = WindData(timestamp=create_time)
-        start_time = datetime.now() - timedelta(minutes=5)
+        start_time = timezone.now() - timedelta(minutes=5)
         self.assertTrue(w.is_published_within(start_time))
 
     def test_wind_data_timestamp_is_not_within_time(self):
-        create_time = datetime.now() - timedelta(minutes=5)
+        create_time = timezone.now() - timedelta(minutes=5)
         w = WindData(timestamp=create_time)
-        start_time = datetime.now() - timedelta(minutes=2)
+        start_time = timezone.now() - timedelta(minutes=2)
         self.assertFalse(w.is_published_within(start_time))
 
-        create_time = datetime.now() - timedelta(minutes=5)
+        create_time = timezone.now() - timedelta(minutes=5)
         w = WindData(timestamp=create_time)
-        start_time = datetime.now() - timedelta(minutes=15)
-        end_time = datetime.now() - timedelta(minutes=10)
+        start_time = timezone.now() - timedelta(minutes=15)
+        end_time = timezone.now() - timedelta(minutes=10)
         self.assertFalse(w.is_published_within(start_time, end_time))
 
 
@@ -63,7 +63,7 @@ class TestViews(TestCase):
 
     def test_wind_data_old_is_not_pulled(self):
         create_wind_data(minutes=-10)
-        start_time = datetime.now() - timedelta(minutes=5)
+        start_time = timezone.now() - timedelta(minutes=5)
         response = self.client.get(reverse('wind_data')+"?start_time="+str(start_time))
         j = response.json()
         self.assertEqual(len(j), 0)

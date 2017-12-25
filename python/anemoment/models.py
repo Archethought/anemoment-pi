@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from django.utils import timezone
 
 
 class WindData(models.Model):
@@ -11,7 +11,7 @@ class WindData(models.Model):
     temperature = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    def is_published_within(self, start_time, end_time=datetime.now()):
+    def is_published_within(self, start_time, end_time=timezone.now()):
         """
         Determine if the timestamp value falls between start and end time.
         :type start_time: datetime
