@@ -39,6 +39,20 @@ class TestViews(TestCase):
         j = response.json()
         self.assertEqual(len(j), 0)
 
+    def test_wind_data_recent_is_pulled(self):
+        data = create_wind_data(
+            speed=1,
+            direction=14,
+            north_south=13,
+            west_east=12,
+            up_down=-3.1,
+            temperature=22,
+        )
+        response = self.client.get(reverse('wind_data'))
+        j = response.json()
+        self.assertEqual(len(j), 1)
+        self.assertEqual(j[0]['id'], data.id)
+
 
 class TestParser(TestCase):
     GOOD_ANEMOMENT_DATA = [
