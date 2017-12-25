@@ -15,6 +15,4 @@ def graph(request):
 def wind_data(request):
     threshold = timezone.now() - timedelta(minutes=1)
     model_data = list(WindData.objects.filter(timestamp__gte=threshold).values())
-    p = Parser()
-    p.parse_string("05.2 112 -01.9 04.7 01.1 22.6")
     return JsonResponse(model_data, safe=False)
