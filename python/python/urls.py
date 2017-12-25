@@ -19,7 +19,7 @@ from django.urls import path
 from anemoment.views import graph, wind_data
 
 urlpatterns = [
-    path(r'', graph),
+    path(r'', graph, name='index'),
     path(r'api/wind_data', wind_data, name='wind_data'),
     path('admin/', admin.site.urls),
 ]

@@ -1,9 +1,16 @@
 from django.test import TestCase
+from django.urls import reverse
 from unittest.mock import Mock, patch
 from datetime import datetime, timedelta
+import json
 
 from .parser import Parser
 from .models import WindData
+
+
+def create_wind_data(minutes=0, **kwargs):
+    timestamp = datetime.now() + timedelta(minutes=minutes)
+    return WindData.objects.create(timestamp=timestamp, **kwargs)
 
 
 class TestModels(TestCase):
@@ -27,7 +34,10 @@ class TestModels(TestCase):
 
 
 class TestViews(TestCase):
-    pass
+    def test_no_data(self):
+        response = self.client.get(reverse('wind_data'))
+        j = response.json()
+        self.assertEqual(len(j), 0)
 
 
 class TestParser(TestCase):
