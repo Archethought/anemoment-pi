@@ -9,7 +9,7 @@ class WindData(models.Model):
     west_east = models.FloatField()
     up_down = models.FloatField()
     temperature = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
 
     def is_published_within(self, start_time, end_time=timezone.now()):
         """

@@ -23,9 +23,10 @@ def create_wind_data(
         'west_east': west_east,
         'up_down': up_down,
         'temperature': temperature,
+        'timestamp': timezone.now() + timedelta(minutes=minutes),
     }
-    timestamp = timezone.now() + timedelta(minutes=minutes)
-    return WindData.objects.create(timestamp=timestamp, **kwargs)
+    retval = WindData.objects.create(**kwargs)
+    return retval
 
 
 class TestModels(TestCase):
@@ -62,9 +63,9 @@ class TestViews(TestCase):
         self.assertEqual(j[0]['id'], data.id)
 
     def test_wind_data_old_is_not_pulled(self):
-        create_wind_data(minutes=-10)
-        start_time = timezone.now() - timedelta(minutes=5)
-        response = self.client.get(reverse('wind_data')+"?start_time="+str(start_time))
+        data = create_wind_data(minutes=-10)
+        minutes_shown = 5
+        response = self.client.get(reverse('wind_data')+"?minutes_shown="+str(minutes_shown))
         j = response.json()
         self.assertEqual(len(j), 0)
 
