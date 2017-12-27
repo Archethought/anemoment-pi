@@ -1,9 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-import random
 from django.utils import timezone
 from datetime import timedelta
-from .parser import Parser
 from .models import WindData
 
 
@@ -13,8 +11,8 @@ def graph(request):
 
 
 def wind_data(request):
-    threshold = timezone.now() - timedelta(minutes=1)
-    model_data = list(WindData.objects.filter(timestamp__gte=threshold).values())
-    p = Parser()
-    p.parse_string("05.2 112 -01.9 04.7 01.1 22.6")
+    DEFAULT_MINUTES_SHOWN = 2
+    minutes_shown = request.GET.get("minutes_shown", DEFAULT_MINUTES_SHOWN)
+    start_time = timezone.now() - timedelta(minutes=float(minutes_shown))
+    model_data = list(WindData.objects.filter(timestamp__gte=start_time).values())
     return JsonResponse(model_data, safe=False)

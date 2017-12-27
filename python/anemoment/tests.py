@@ -1,7 +1,74 @@
 from django.test import TestCase
+from django.urls import reverse
 from unittest.mock import Mock, patch
+from datetime import timedelta
+from django.utils import timezone
 
 from .parser import Parser
+from .models import WindData
+
+
+def create_wind_data(
+        minutes=0,
+        speed=1,
+        direction=14,
+        north_south=13,
+        west_east=12,
+        up_down=-3.1,
+        temperature=22):
+    kwargs = {
+        'speed': speed,
+        'direction': direction,
+        'north_south': north_south,
+        'west_east': west_east,
+        'up_down': up_down,
+        'temperature': temperature,
+        'timestamp': timezone.now() + timedelta(minutes=minutes),
+    }
+    retval = WindData.objects.create(**kwargs)
+    return retval
+
+
+class TestModels(TestCase):
+    def test_wind_data_timestamp_is_within_time(self):
+        create_time = timezone.now() - timedelta(minutes=2)
+        w = WindData(timestamp=create_time)
+        start_time = timezone.now() - timedelta(minutes=5)
+        self.assertTrue(w.is_published_within(start_time))
+
+    def test_wind_data_timestamp_is_not_within_time(self):
+        create_time = timezone.now() - timedelta(minutes=5)
+        w = WindData(timestamp=create_time)
+        start_time = timezone.now() - timedelta(minutes=2)
+        self.assertFalse(w.is_published_within(start_time))
+
+        create_time = timezone.now() - timedelta(minutes=5)
+        w = WindData(timestamp=create_time)
+        start_time = timezone.now() - timedelta(minutes=15)
+        end_time = timezone.now() - timedelta(minutes=10)
+        self.assertFalse(w.is_published_within(start_time, end_time))
+
+
+class TestViews(TestCase):
+    def test_wind_data_no_data(self):
+        response = self.client.get(reverse('wind_data'))
+        j = response.json()
+        self.assertEqual(len(j), 0)
+
+    def test_wind_data_recent_is_pulled(self):
+        data = create_wind_data()
+        response = self.client.get(reverse('wind_data'))
+        j = response.json()
+        self.assertEqual(len(j), 1)
+        self.assertEqual(j[0]['id'], data.id)
+
+    def test_wind_data_old_is_not_pulled(self):
+        data = create_wind_data(minutes=-10)
+        minutes_shown = 5
+        response = self.client.get(reverse('wind_data')+"?minutes_shown="+str(minutes_shown))
+        j = response.json()
+        self.assertEqual(len(j), 0)
+
 
 class TestParser(TestCase):
     GOOD_ANEMOMENT_DATA = [
