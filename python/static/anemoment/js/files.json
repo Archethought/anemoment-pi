@@ -1,0 +1,6 @@
+{
+    "name": "Anemoment Test Suite",
+    "js_files": [
+      "anemoment/js/src/Graph.js"
+    ]
+}
