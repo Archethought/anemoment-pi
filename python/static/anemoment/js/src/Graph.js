@@ -11,8 +11,8 @@ function Graph(data_url) {
 /**
  * Renders the graph on the page
  */
-Graph.prototype.render = function () {
-    this.c3_graph = this.renderC3();
+Graph.prototype.render = function (bind_to) {
+    this.c3_graph = this.renderC3(bind_to);
 };
 
 /**
@@ -25,7 +25,8 @@ Graph.prototype.update = function () {
 /**
  * Generates the C3 graph and returns the associated object
  */
-Graph.prototype.renderC3 = function () {
+Graph.prototype.renderC3 = function (bind_to) {
+
 };
 
 /**

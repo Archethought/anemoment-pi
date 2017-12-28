@@ -1,6 +1,7 @@
 describe("Graph", function () {
     var DATA_URL = 'data_source'
     var MOCK_C3_GRAPH = 'mock_data'
+    var MOCK_BIND_TO = 'bind_to'
 
     beforeEach(function () {
         this.graph = new Graph(DATA_URL);
@@ -19,11 +20,11 @@ describe("Graph", function () {
     describe("when it is rendered", function() {
         beforeEach(function () {
             spyOn(this.graph, 'renderC3').and.returnValue(MOCK_C3_GRAPH);
-            this.graph.render();
+            this.graph.render(MOCK_BIND_TO);
         });
 
         it("renders a C3 graph", function () {
-            expect(this.graph.renderC3).toHaveBeenCalled();
+            expect(this.graph.renderC3).toHaveBeenCalledWith(MOCK_BIND_TO);
         });
 
         it("updates the c3_graph parameter", function () {
