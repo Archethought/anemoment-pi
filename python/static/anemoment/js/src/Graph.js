@@ -26,7 +26,43 @@ Graph.prototype.update = function () {
  * Generates the C3 graph and returns the associated object
  */
 Graph.prototype.renderC3 = function (bind_to) {
+    var chart = null;
+    d3.json(url, function (error, data) {
+        if (error) throw error;
 
+        data.forEach(function(d) {
+            d.timestamp = parseTime.parse(d.timestamp);
+        });
+
+        chart = c3.generate({
+            bindto: bind_to,
+            data: {
+                json: data,
+                keys: {
+                    x: 'timestamp',
+                    value: ['speed', 'direction', 'temperature'],
+                }
+            },
+            transition: {
+              duration: 0
+            },
+            tooltip: {
+                show: false
+            },
+            axis: {
+                x: {
+                    type: 'timeseries',
+                    tick: {
+                        format: '%M:%S',
+                        max: 2,
+                        count: 20,
+                    }
+                }
+            }
+        })
+
+    });
+    return chart;
 };
 
 /**
