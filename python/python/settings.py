@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'anemoment.apps.AnemomentConfig',
+    'django_jasmine'
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,4 @@ STATICFILES_DIRS = [
 ]
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'anemoment/templates'),)
+JASMINE_TEST_DIRECTORY = os.path.join(BASE_DIR, "static/anemoment/js")

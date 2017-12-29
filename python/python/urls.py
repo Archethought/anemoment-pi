@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from anemoment.views import graph, wind_data
 
@@ -22,4 +22,5 @@ urlpatterns = [
     path(r'', graph, name='index'),
     path(r'api/wind_data', wind_data, name='wind_data'),
     path('admin/', admin.site.urls),
+    path(r'jasmine/', include('django_jasmine.urls'))
 ]

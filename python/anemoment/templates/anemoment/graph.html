@@ -5,80 +5,21 @@
 <body>
 <div id="chart"></div>
 <script src="http://d3js.org/d3.v3.js"></script>
-
 <script src="{% static "c3/c3.js" %}"></script>
+<script src="{% static "anemoment/js/src/Graph.js" %}"></script>
 <script>
-
-    var parseTime = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
 
     var url = "{% url "wind_data" %}";
 
-    var chart = null;
+    var graph = new Graph(url);
 
-    d3.json(url, function (error, data) {
-        if (error) throw error;
+    graph.render("#chart");
 
-        data.forEach(function(d) {
-            d.timestamp = parseTime.parse(d.timestamp);
-        });
-
-        chart = c3.generate({
-            bindto: '#chart',
-            data: {
-                json: data,
-                keys: {
-                    x: 'timestamp',
-                    value: ['speed', 'direction', 'temperature'],
-                }
-            },
-            transition: {
-              duration: 0
-            },
-            tooltip: {
-                show: false
-            },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                    tick: {
-                        format: '%M:%S',
-                        max: 2,
-                        count: 20,
-                    }
-                }
-            }
-        })
-
-    });
-
-    function updateData() {
-        d3.json(url, function (error, data) {
-            if (error) throw error;
-            var latest_time = 0;
-            data.forEach(function(d) {
-                d.timestamp = parseTime.parse(d.timestamp);
-                if (d.timestamp > latest_time) {
-                    latest_time = d.timestamp;
-                }
-            });
-            var start_time = d3.time.minute.offset(latest_time, -1)
-
-            chart.load({
-                json: data,
-                keys: {
-                    x: 'timestamp',
-                    value: ['speed', 'direction', 'temperature'],
-                }
-            });
-            chart.axis.min({x: start_time});
-            chart.axis.max({x: latest_time});
-        });
+    function update() {
+        graph.update();
     }
 
-    updateData();
-
-    setInterval(updateData, 500);
-
+    setInterval(update, 500);
 </script>
 </body>
 </html>
