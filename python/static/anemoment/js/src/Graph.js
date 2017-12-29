@@ -3,92 +3,99 @@
  * @param {string} data_url - The relative URL of the json-formatted graph data.
  * @constructor
  */
-function Graph(data_url) {
-    this.data_url = data_url;
-    this.c3_graph = null;
-}
+class Graph {
+    constructor (data_url) {
+        this.data_url = data_url;
+        this.c3_graph = null;
+        this.bind_to = null;
+        this.parseTime = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
+    }
 
-/**
- * Renders the graph on the page
- */
-Graph.prototype.render = function (bind_to) {
-    this.c3_graph = this.renderC3(bind_to);
-};
+    /**
+    * Renders the graph on the page
+    */
+    render (bind_to) {
+        console.log(this);
+        this.bind_to = bind_to;
+        this.c3_graph = this.renderC3(bind_to);
+    }
 
-/**
- * Updates the graph with the data at data_url
- */
-Graph.prototype.update = function () {
-    this.updateC3(this.c3_graph, this.data_url);
-};
+    /**
+     * Updates the graph with the data at data_url
+     */
+    update () {
+        console.log(this);
+        this.updateC3();
+    }
 
-/**
- * Generates the C3 graph and returns the associated object
- */
-Graph.prototype.renderC3 = function (bind_to) {
-    var chart = null;
-    d3.json(this.data_url, function (error, data) {
-        if (error) throw error;
+    renderC3 (bind_to) {
+        console.log(this);
+        this.bind_to = bind_to;
+        var graph = this;
+        d3.json(this.data_url, function(error, data) {
+            if (error) throw error;
 
-        data.forEach(function(d) {
-            d.timestamp = parseTime.parse(d.timestamp);
+            data.forEach(function (d) {
+                d.timestamp = graph.parseTime.parse(d.timestamp);
+            });
+
+            graph.c3_graph = c3.generate({
+                bindto: bind_to,
+                data: {
+                    json: data,
+                    keys: {
+                        x: 'timestamp',
+                        value: ['speed', 'direction', 'temperature'],
+                    }
+                },
+                transition: {
+                    duration: 0
+                },
+                tooltip: {
+                    show: false
+                },
+                axis: {
+                    x: {
+                        type: 'timeseries',
+                        tick: {
+                            format: '%M:%S',
+                            max: 2,
+                            count: 20,
+                        }
+                    }
+                }
+            });
         });
 
-        chart = c3.generate({
-            bindto: bind_to,
-            data: {
+    }
+
+    updateC3() {
+        var chart = this.c3_graph;
+        var parseTime = this.parseTime;
+        if (chart === undefined){
+            return;
+        }
+        d3.json(this.data_url, function (error, data) {
+            if (error) throw error;
+            var latest_time = 0;
+            data.forEach(function(d) {
+                d.timestamp = parseTime.parse(d.timestamp);
+                if (d.timestamp > latest_time) {
+                    latest_time = d.timestamp;
+                }
+            });
+
+            console.log(chart);
+            var start_time = d3.time.minute.offset(latest_time, -1);
+            chart.load({
                 json: data,
                 keys: {
                     x: 'timestamp',
                     value: ['speed', 'direction', 'temperature'],
                 }
-            },
-            transition: {
-              duration: 0
-            },
-            tooltip: {
-                show: false
-            },
-            axis: {
-                x: {
-                    type: 'timeseries',
-                    tick: {
-                        format: '%M:%S',
-                        max: 2,
-                        count: 20,
-                    }
-                }
-            }
-        })
-
-    });
-    return chart;
-};
-
-/**
- * Update the c3 graph
- * @param {c3 chart} graph - the c3 graph to update
- * @param {string} data_url - The relative URL of the json-formatted graph data.
- */
-Graph.prototype.updateC3 = function () {
-    d3.json(this.data_url, function (error, data) {
-        if (error) throw error;
-        var latest_time = 0;
-        data.forEach(function(d) {
-            d.timestamp = parseTime.parse(d.timestamp);
-            if (d.timestamp > latest_time) {
-                latest_time = d.timestamp;
-            }
+            });
+            chart.axis.min({x: start_time});
+            chart.axis.max({x: latest_time});
         });
-        var start_time = d3.time.minute.offset(latest_time, -1)
-        this.graph.load({
-            json: data,
-            keys: {
-                x: 'timestamp',
-                value: ['speed', 'direction', 'temperature'],
-            }
-        });
-        this.graph.axis.min({x: start_time});
-        this.graph.axis.max({x: latest_time});
-    });
-};
+    }
+}
