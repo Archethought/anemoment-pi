@@ -39,8 +39,8 @@ describe("Graph", function () {
             this.graph.update();
         });
 
-        it("updates the stored c3_graph with data from the stored data_url", function () {
-            expect(this.graph.updateC3).toHaveBeenCalledWith(MOCK_C3_GRAPH, DATA_URL);
+        it("updates the stored c3_graph", function () {
+            expect(this.graph.updateC3).toHaveBeenCalledWith();
         });
     });
 

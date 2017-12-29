@@ -9,15 +9,14 @@
 <script src="{% static "anemoment/js/src/Graph.js" %}"></script>
 <script>
 
-    var parseTime = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
-
     var url = "{% url "wind_data" %}";
 
-    var chart = null;
+    var parseTime = d3.time.format("%Y-%m-%dT%H:%M:%S.%LZ");
 
     var graph = new Graph(url);
 
     graph.render("#chart");
+    graph.update()
 
 </script>
 </body>

@@ -27,7 +27,7 @@ Graph.prototype.update = function () {
  */
 Graph.prototype.renderC3 = function (bind_to) {
     var chart = null;
-    d3.json(url, function (error, data) {
+    d3.json(this.data_url, function (error, data) {
         if (error) throw error;
 
         data.forEach(function(d) {
@@ -70,5 +70,25 @@ Graph.prototype.renderC3 = function (bind_to) {
  * @param {c3 chart} graph - the c3 graph to update
  * @param {string} data_url - The relative URL of the json-formatted graph data.
  */
-Graph.prototype.updateC3 = function (graph, data_url) {
+Graph.prototype.updateC3 = function () {
+    d3.json(this.data_url, function (error, data) {
+        if (error) throw error;
+        var latest_time = 0;
+        data.forEach(function(d) {
+            d.timestamp = parseTime.parse(d.timestamp);
+            if (d.timestamp > latest_time) {
+                latest_time = d.timestamp;
+            }
+        });
+        var start_time = d3.time.minute.offset(latest_time, -1)
+        this.graph.load({
+            json: data,
+            keys: {
+                x: 'timestamp',
+                value: ['speed', 'direction', 'temperature'],
+            }
+        });
+        this.graph.axis.min({x: start_time});
+        this.graph.axis.max({x: latest_time});
+    });
 };
