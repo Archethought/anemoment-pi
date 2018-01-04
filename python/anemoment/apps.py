@@ -3,7 +3,6 @@ import serial
 
 class AnemomentConfig(AppConfig):
     name = 'anemoment'
-    perser = None
 
     def ready(self):
         """
