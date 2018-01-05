@@ -39,35 +39,30 @@ class Graph {
         d3.json(this.data_url, function(error, data) {
             if (error) throw error;
 
-            data.forEach(function (d) {
-                d.timestamp = graph.parseTime(d.timestamp);
-            });
-
             graph.c3_graph = c3.generate({
                 bindto: bind_to,
                 data: {
                     json: data,
                     keys: {
-                        x: 'timestamp',
-                        value: ['speed', 'direction', 'temperature'],
+                        x: 'id',
+                        value: ['speed', 'temperature'],
                     }
                 },
                 transition: {
                     duration: 0
                 },
+		interaction: {
+		    enabled: false
+		},
                 tooltip: {
                     show: false
                 },
-                axis: {
-                    x: {
-                        type: 'timeseries',
-                        tick: {
-                            format: '%M:%S',
-                            max: 2,
-                            count: 20,
-                        }
-                    }
-                }
+		axis: {
+		    y: {
+		        min: -4,
+			max: 4
+		    }
+		}
             });
         });
 
@@ -82,23 +77,14 @@ class Graph {
         d3.json(this.data_url, function (error, data) {
             if (error) throw error;
             var latest_time = 0;
-            data.forEach(function(d) {
-                d.timestamp = parseTime(d.timestamp);
-                if (d.timestamp > latest_time) {
-                    latest_time = d.timestamp;
-                }
-            });
 
-            var start_time = d3.time.minute.offset(latest_time, -1);
             chart.load({
                 json: data,
                 keys: {
-                    x: 'timestamp',
-                    value: ['speed', 'direction', 'temperature'],
+                    x: 'id',
+                    value: ['speed', 'temperature'],
                 }
             });
-            chart.axis.min({x: start_time});
-            chart.axis.max({x: latest_time});
         });
     }
 }
