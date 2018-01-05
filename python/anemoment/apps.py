@@ -8,9 +8,9 @@ class AnemomentConfig(AppConfig):
         """
         Runs on application startup.
         """
-        UART = None
+        UART = "/dev/ttyAMA0"
         from .parser import Parser
-
+        print(UART)
         if UART is not None:
             ser = serial.Serial(port=UART, baudrate=115200)
         else:

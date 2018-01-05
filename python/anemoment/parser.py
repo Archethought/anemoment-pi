@@ -20,7 +20,8 @@ class Parser:
             self.t.start()
 
     def __worker(self):
-        self.parse_string(self.__serial.readline())
+        while 1:
+            self.parse_string(str(self.__serial.readline())[3:-6])
 
     def parse_string(self, input_data):
         """
@@ -28,11 +29,11 @@ class Parser:
         :param input_data: A line of Anemoment TriSonica formatted data
         :type input_data: string
         """
-        print("data: " + input_data)
         data = input_data.split(" ")
+        data = list(filter(None, data))
         data_len = len(data)
         new_value = {}
-        if data_len != 5 and data_len != 6:
+        if data_len < 5:
             RawInputError.objects.create(type=RawInputError.E_INCOMPLETE, raw_input=input_data)
             return
         elif data_len == 5:
@@ -49,6 +50,7 @@ class Parser:
             WindData.objects.create(**new_value)
         except ValueError:
             RawInputError.objects.create(type=RawInputError.E_INVALID, raw_input=input_data)
-
+        except RecursionError:
+            RawInputError.objects.create(type=RawInputError.E_INVALID, raw_input=input_data)
 
 
