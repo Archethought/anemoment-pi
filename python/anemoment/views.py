@@ -11,7 +11,7 @@ def graph(request):
 
 
 def wind_data(request):
-    DEFAULT_MINUTES_SHOWN = 2
+    DEFAULT_MINUTES_SHOWN = 1
     minutes_shown = request.GET.get("minutes_shown", DEFAULT_MINUTES_SHOWN)
     start_time = timezone.now() - timedelta(minutes=float(minutes_shown))
     model_data = list(WindData.objects.filter(timestamp__gte=start_time).values())
