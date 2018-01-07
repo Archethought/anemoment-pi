@@ -5,6 +5,7 @@ class AnemomentConfig(AppConfig):
     name = 'anemoment'
 
     def ready(self):
+        UART = None
         UART = "/dev/ttyAMA0"
         from .parser import Parser
 

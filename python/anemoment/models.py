@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 
-
 class WindData(models.Model):
     wind_speed_3d = models.FloatField()
     horizontal_wind_direction = models.FloatField()
@@ -23,7 +22,6 @@ class WindData(models.Model):
         :return: True or False
         """
         return start_time <= self.timestamp <= end_time
-
 
 class RawInputError(models.Model):
     E_INVALID = 0

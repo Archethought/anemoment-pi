@@ -45,7 +45,7 @@ class Graph {
                     json: data,
                     keys: {
                         x: 'id',
-                        value: ['speed', 'temperature'],
+                        value: ['wind_speed_3d', 'u_vector', 'v_vector', 'w_vector'],
                     }
                 },
                 transition: {
@@ -89,7 +89,7 @@ class Graph {
                 json: data,
                 keys: {
                     x: 'id',
-                    value: ['speed', 'temperature'],
+                    value: ['wind_speed_3d', 'u_vector', 'v_vector', 'w_vector'],
                 }
             });
         });

@@ -36,6 +36,7 @@ class Parser:
         available_data = [
             "wind_speed_3d",
             "horizontal_wind_direction",
+            None,
             "u_vector",
             "v_vector",
             "w_vector",
@@ -48,12 +49,11 @@ class Parser:
             RawInputError.objects.create(type=RawInputError.E_INCOMPLETE, raw_input=input_data)
             return
         try:
-            new_value["temperature"] = float(new_value["temperature"])
-            new_value["speed"] = float(data[0])
-            new_value["direction"] = float(data[1])
-            new_value["north_south"] = float(data[2])
-            new_value["west_east"] = float(data[3])
-            new_value["up_down"] = float(data[4])
+            x = 0
+            for d in available_data:
+                if d is not None:
+                    new_value[d] = float(data[x])
+                x += 1
             WindData.objects.create(**new_value)
         except ValueError:
             RawInputError.objects.create(type=RawInputError.E_INVALID, raw_input=input_data)
