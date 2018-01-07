@@ -3,12 +3,15 @@ from django.utils import timezone
 
 
 class WindData(models.Model):
-    speed = models.FloatField()
-    direction = models.FloatField()
-    north_south = models.FloatField()
-    west_east = models.FloatField()
-    up_down = models.FloatField()
+    wind_speed_3d = models.FloatField()
+    horizontal_wind_direction = models.FloatField()
+    u_vector = models.FloatField()
+    v_vector = models.FloatField()
+    w_vector = models.FloatField()
     temperature = models.FloatField()
+    humidity = models.FloatField()
+    pressure = models.FloatField()
+    compass_heading = models.FloatField()
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
 
     def is_published_within(self, start_time, end_time=timezone.now()):

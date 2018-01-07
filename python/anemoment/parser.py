@@ -33,13 +33,20 @@ class Parser:
         data = list(filter(None, data))
         data_len = len(data)
         new_value = {}
-        if data_len < 5:
+        available_data = [
+            "wind_speed_3d",
+            "horizontal_wind_direction",
+            "u_vector",
+            "v_vector",
+            "w_vector",
+            "temperature",
+            "humidity",
+            "pressure",
+            "compass_heading"
+        ]
+        if data_len < len(available_data):
             RawInputError.objects.create(type=RawInputError.E_INCOMPLETE, raw_input=input_data)
             return
-        elif data_len == 5:
-            new_value["temperature"] = 0
-        else:
-            new_value["temperature"] = data[5]
         try:
             new_value["temperature"] = float(new_value["temperature"])
             new_value["speed"] = float(data[0])
