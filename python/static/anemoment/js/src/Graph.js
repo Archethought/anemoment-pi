@@ -57,10 +57,17 @@ class Graph {
                 tooltip: {
                     show: false
                 },
+		point: {
+		    show: false
+		},
 		axis: {
 		    y: {
-		        min: -4,
-			max: 4
+		        tick: {
+			    format: function(x) { return Math.round(x * 100) / 100; }
+			}
+		    },
+		    x: {
+			show: false
 		    }
 		}
             });

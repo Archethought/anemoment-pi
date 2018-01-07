@@ -17,9 +17,10 @@
 
     function update() {
         graph.update();
+	setTimeout(update, 200);
     }
 
-    setInterval(update, 500);
+    setTimeout(update, 500);
 </script>
 </body>
 </html>
